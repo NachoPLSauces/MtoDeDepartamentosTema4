@@ -15,25 +15,46 @@
         
         <main>
             <div class="topBar">
-                <div class="botonExportar">
-                    <p><a href="#">EXPORTAR</a></p>
-                </div>
-                <div class="botonImportar">
-                    <p><a href="#">IMPORTAR</a></p>
-                </div>
-                <div class="botonAdd">
-                    <p><a href="#">AÑADIR</a></p>
-                </div>
+                <p><a href="#">EXPORTAR</a></p>
+                <p><a href="#">IMPORTAR</a></p>
+                <p><a href="#">AÑADIR</a></p>
             </div>
             
             <div class="buscarDepartamentos">
-                <div class="botonBuscar">
-                    <p><a href="#">BUSCAR</a></p>
-                </div>
+                <form name="input" action="<?php $_SERVER['PHP_SELF']?>" method="post">
+                    <label>Descripción </label>
+                    <input class="campoDescripcion" type="text" name="nombre" placeholder="Descripción del departamento" value="">
+                    
+                    <input class="botonBuscar" type="submit" value="BUSCAR" name="buscar"/>
+                </form>
+            </div>
+            
+            <div class="mostrarDepartamentos">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>CodDepartamento</th>
+                            <th>DescDepartamento</th>
+                            <th>FechaBaja</th>
+                            <th>VolumenNegocio</th>
+                            <th>Operaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Campo</td>
+                            <td>Campo</td>
+                            <td>Campo</td>
+                            <td>Campo</td>
+                            <td>Campo</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             
             <div class="botBar">
-                <div class="botonVolver">
+                <div>
+                    <p><a href="../MtoDeDepartamentosTema4/mostrarCodigo/muestraMtoDepartamentosTema4.php">MOSTRAR CÓDIGO</a></p>
                     <p><a href="../proyectoDWES/indexProyectoDWES.php">VOLVER</a></p>
                 </div>
             </div>
