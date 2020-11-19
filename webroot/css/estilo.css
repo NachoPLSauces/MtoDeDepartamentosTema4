@@ -35,7 +35,6 @@ header *{
 main{
     width: 100%;height: 85vh;
     padding: 5vh 5vh;
-    border: 1px solid black;
 }
 .topBar{
     width: 100%;height: 48px;
@@ -85,24 +84,27 @@ main{
     
 }
 
+.tHead{
+    margin-top: 5vh;
+}
 .mostrarDepartamentos{
     width: 100%;height: 45vh;
-    margin-top: 5vh;
     border: 1px solid black;
+    overflow: auto;
 }
 table{
     border-collapse: collapse;
+    width: 100%;
 }
 table *{
     border: 1px solid black;
-    height: 24px;
+    height: 32px;
 }
 tr{
     text-align: left;
 }
-th{
-    
-}
+table tr *:nth-child(1){}
+
 
 .botBar{
     width: 100%;height: 48px;
