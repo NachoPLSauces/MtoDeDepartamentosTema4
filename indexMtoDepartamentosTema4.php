@@ -39,7 +39,7 @@
             <div class="topBar">
                 <p><a href="#">EXPORTAR</a></p>
                 <p><a href="#">IMPORTAR</a></p>
-                <p><a href="#">AÑADIR</a></p>
+                <p><a href="codigoPHP/altaDepartamento.php">AÑADIR</a></p>
             </div>
             
             <div class="buscarDepartamentos">
@@ -65,15 +65,7 @@
                 </form>
             </div>
             
-            <table class="tHead">
-                <tr>
-                    <th>CodDepartamento</th>
-                    <th>DescDepartamento</th>
-                    <th>FechaBaja</th>
-                    <th>VolumenNegocio</th>
-                    <th>Operaciones</th>
-                </tr>
-            </table>
+            
                     
             <div class="mostrarDepartamentos">
                 <?php
@@ -117,7 +109,15 @@
                         $consulta->execute();
                 ?>
                 <table>
-                    
+                    <thead>
+                        <tr>
+                            <th>CodDepartamento</th>
+                            <th>DescDepartamento</th>
+                            <th>FechaBaja</th>
+                            <th>VolumenNegocio</th>
+                            <th>Operaciones</th>
+                        </tr>
+                    </thead>
                     <tbody>
                     <?php  
                         $registro = $consulta->fetchObject();
@@ -128,7 +128,11 @@
                                 <td><?php echo $registro->DescDepartamento; ?></td>
                                 <td><?php echo $registro->FechaBaja; ?></td>
                                 <td><?php echo $registro->VolumenNegocio; ?></td>
-                                <td><?php echo "Operaciones" ?></td>
+                                <td>
+                                    <img src="doc/editar.png">
+                                    <img src="doc/mostrar.png">
+                                    <img src="doc/borrar.png">
+                                </td>
                             </tr>
                             <?php
                             $registro = $consulta->fetchObject();

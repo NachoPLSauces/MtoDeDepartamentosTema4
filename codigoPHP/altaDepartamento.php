@@ -143,7 +143,6 @@ EOD;
                 unset($miDB);
             }
         }
-        else{
         ?>
 
         <form name="input" action="<?php $_SERVER['PHP_SELF']?>" method="post">
@@ -214,8 +213,6 @@ EOD;
             </fieldset>
         </form>
 
-        <?php
-        }
-        ?>
+        
     </body>
 </html>
