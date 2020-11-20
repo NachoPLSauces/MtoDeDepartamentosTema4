@@ -68,6 +68,16 @@
             
                     
             <div class="mostrarDepartamentos">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>CodDepartamento</th>
+                            <th>DescDepartamento</th>
+                            <th>FechaBaja</th>
+                            <th>VolumenNegocio</th>
+                            <th>Operaciones</th>
+                        </tr>
+                    </thead>
                 <?php
                     if(isset($_REQUEST['buscar'])){
                         //Comprobar que el campo campoDescDepartamento se ha rellenado con un alfanumérico
@@ -108,16 +118,7 @@
                         //Ejecución de la consulta
                         $consulta->execute();
                 ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>CodDepartamento</th>
-                            <th>DescDepartamento</th>
-                            <th>FechaBaja</th>
-                            <th>VolumenNegocio</th>
-                            <th>Operaciones</th>
-                        </tr>
-                    </thead>
+                
                     <tbody>
                     <?php  
                         $registro = $consulta->fetchObject();
@@ -139,7 +140,7 @@
                         }
                     ?>
                     </tbody>
-                </table>
+                
                 
                 <?php
                 } catch (PDOException $pdoe) {
@@ -151,6 +152,7 @@
                 }
         }
                 ?>
+                    </table>
             </div>
             
             <div class="botBar">
