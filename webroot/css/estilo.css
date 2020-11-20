@@ -1,0 +1,170 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    position: relative;
+    height: 100vh;
+}
+a {
+    text-decoration: none;
+    
+    
+}
+
+header{
+    display: table;
+    width: 100%;
+    background-color: cadetblue;
+    height: 10vh;
+}
+header *{
+    display: table-cell;
+    text-align: center;
+    width: 100%;height: 64px;
+    font-size: 3rem;
+    line-height: 64px;
+    vertical-align: middle;
+    color: white;
+    font-weight: bold;
+}
+
+main{
+    width: 100%;height: 85vh;
+    padding: 5vh 5vh;
+}
+.topBar{
+    width: 100%;height: 48px;
+    padding: 0 2vw;
+    display: flex;
+    flex-wrap: nowrap;
+    text-align: center;
+    justify-content: center;
+}
+.topBar p{
+    width: auto;height: 48px;
+    padding: 0 2vw;
+    margin-right: 20px;
+    line-height: 48px;
+    border: 2px solid cadetblue;
+    border-radius: 8px;
+    text-align: center;
+}
+.topBar  p a{
+    color: cadetblue;
+    font-weight: bold;
+    text-align: center;
+}
+
+.buscarDepartamentos{
+    width: 100%;height: 48px;
+    
+    margin-top: 5vh; 
+}
+.buscarDepartamentos form{
+    width: auto;height: 48px;
+    padding: 0 2vw;
+    line-height: 48px;
+    
+}
+.campoDescripcion{
+    width: 300px;height: 24px;
+}
+.botonBuscar{
+    float: right;
+    width: auto;height: 48px;
+    padding: 0 2vw;
+    line-height: 48px;
+    font-size: 1rem;
+    border: 2px solid cadetblue;
+    border-radius: 8px;
+    background-color: white;
+    color: cadetblue;
+    font-weight: bold;
+    
+}
+
+.mostrarDepartamentos{
+    width: 100%;height: 40vh;
+    margin-top: 5vh;
+    overflow: auto;
+    border-radius: 4px;
+    box-shadow: 0 0 40px 0 rgba(0,0,0,.20);
+}
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+thead{
+    position: sticky;
+    top: 0;
+    background-color: #212529;
+    color: white;
+}
+tr{
+    text-align: left;
+    height: 5vh;
+}
+tr:nth-child(even) {
+  background-color: #f3f3f3;
+}
+tr *{
+    padding-left: 2px;
+}
+td{
+    color: #717478;
+}
+tbody tr:hover td{
+    color: black;
+    background-color: #f2f2f2;
+}
+img{
+    height: 1.5rem;
+}
+tr td:nth-of-type(1){width: 18%;}
+tr *:nth-of-type(2){width: 30%}
+tr *:nth-of-type(3){width: 12%}
+tr *:nth-of-type(4){width: 18%}
+tr *:nth-of-type(5){width: 20%}
+
+.botBar{
+    width: 100%;height: 48px;
+    padding: 14px 2vw;
+}
+.botBar div{
+    float: right;
+}
+.botBar p{
+    display: inline-block;
+    width: auto;height: 48px;
+    padding: 0 2vw;
+    margin-left: 10px;
+    line-height: 48px;
+    border: 2px solid cadetblue;
+    border-radius: 8px;
+}
+.botBar  p a{
+    color: cadetblue;
+    font-weight: bold;
+}
+
+
+footer{
+    display: table;
+    width: 100%;
+    background-color: black;
+    height: 5vh;
+    padding: 10px;
+}
+footer *{
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    color: white;
+    font-weight: bold;
+}
