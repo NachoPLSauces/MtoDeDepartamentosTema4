@@ -36,37 +36,25 @@
         </header>
         
         <main>
-            <div class="topBar">
-                <p><a href="#">EXPORTAR</a></p>
-                <p><a href="#">IMPORTAR</a></p>
-                <p><a href="codigoPHP/altaDepartamento.php">AÑADIR</a></p>
-            </div>
-            
             <div class="buscarDepartamentos">
                 <form name="input" action="<?php $_SERVER['PHP_SELF']?>" method="post">
-                    <label>Descripción </label>
-                    <input class="campoDescripcion" name="DescDepartamento" type="text" placeholder="Descripción del departamento" value="<?php 
-                        //Devuelve el campo campoDescDepartamento si se había introducido correctamente
-                        if(isset($_REQUEST['DescDepartamento']) && $aErrores["DescDepartamento"] == null){
+                    <div class="descripcion">
+                        <label>Descripción </label>
+                        <input name="DescDepartamento" type="text" placeholder="Descripción del departamento" value="<?php 
+                            //Devuelve el campo campoDescDepartamento
                             echo $_REQUEST['DescDepartamento'];
-                        }
-                    ?>"/>
+                        ?>"/>
+                        <input class="botonBuscar" type="submit" value="BUSCAR" name="buscar"/>
+                    </div>
 
-                    <span style="color:red">
-                        <?php
-                        //Imprime el error en el caso de que se introduzca mal el código del Departamento
-                        if($aErrores["DescDepartamento"] != null){
-                            echo $aErrores['DescDepartamento'];
-                        }
-                        ?> 
-                    </span>
-                    
-                    <input class="botonBuscar" type="submit" value="BUSCAR" name="buscar"/>
+                    <div class="topBar">
+                        <a href="codigoPHP/exportarDepartamentos.php">EXPORTAR</a>
+                        <a href="#">IMPORTAR</a>
+                        <a href="codigoPHP/altaDepartamento.php">AÑADIR</a>
+                    </div>
                 </form>
             </div>
-            
-            
-                    
+                
             <div class="mostrarDepartamentos">
                 <table>
                     <thead>
@@ -75,7 +63,7 @@
                             <th>DescDepartamento</th>
                             <th>FechaBaja</th>
                             <th>VolumenNegocio</th>
-                            <th>Operaciones</th>
+                            <th></th>
                         </tr>
                     </thead>
                 <?php
@@ -97,7 +85,6 @@
                         $entradaOK = false;
                     }
                     
-                    if($entradaOK){
                     //Si los datos han sido introducidos correctamente
                     $aRespuestas = ["DescDepartamento" => $_REQUEST['DescDepartamento']];
 
@@ -122,17 +109,24 @@
                     <tbody>
                     <?php  
                         $registro = $consulta->fetchObject();
+                        
+                        //Si no se encuentra ningún departamento se muestra un mensaje
+                        if($registro == null){
+                            echo '<td colspan="4" class="sinDepartamentos">No se han encontrado departamentos</td>';
+                        }
+                        
+                        //Se muestran los departamentos encontrados
                         while ($registro != null) {
                     ?>
-                            <tr>
-                                <td><?php echo $registro->CodDepartamento; ?></td>
-                                <td><?php echo $registro->DescDepartamento; ?></td>
-                                <td><?php echo $registro->FechaBaja; ?></td>
-                                <td><?php echo $registro->VolumenNegocio; ?></td>
+                        <tr>
+                                <td <?php if($registro->FechaBaja){echo 'style="color: red !important"';} ?>><?php echo $registro->CodDepartamento; ?></td>
+                                <td <?php if($registro->FechaBaja){echo 'style="color: red !important"';} ?>><?php echo $registro->DescDepartamento; ?></td>
+                                <td <?php if($registro->FechaBaja){echo 'style="color: red !important"';} ?>><?php echo ($registro->FechaBaja ? $registro->FechaBaja : "null"); ?></td>
+                                <td <?php if($registro->FechaBaja){echo 'style="color: red !important"';} ?>><?php echo $registro->VolumenNegocio; ?></td>
                                 <td>
-                                    <img src="doc/editar.png">
-                                    <img src="doc/mostrar.png">
-                                    <img src="doc/borrar.png">
+                                    <a href="./codigoPHP/editarDepartamento.php?codDepartamento=<?php echo $registro->CodDepartamento; ?>"><img src="doc/images/editar.png"></a>
+                                    <a href="./codigoPHP/mostrarDepartamento.php?codDepartamento=<?php echo $registro->CodDepartamento; ?>"><img src="doc/images/mostrar.png"></a>
+                                    <a href="./codigoPHP/borrarDepartamento.php?codDepartamento=<?php echo $registro->CodDepartamento; ?>"><img src="doc/images/papelera.png"></a>
                                 </td>
                             </tr>
                             <?php
@@ -150,21 +144,27 @@
                     //Cerrar la conexión
                     unset($miDB);
                 }
-        }
                 ?>
                     </table>
             </div>
             
             <div class="botBar">
                 <div>
-                    <p><a href="../MtoDeDepartamentosTema4/mostrarCodigo/muestraMtoDepartamentosTema4.php">MOSTRAR CÓDIGO</a></p>
-                    <p><a href="../proyectoDWES/indexProyectoDWES.php">VOLVER</a></p>
+                    <a href="../MtoDeDepartamentosTema4/mostrarCodigo/muestraMtoDepartamentosTema4.php">MOSTRAR CÓDIGO</a>
+                    <a href="../proyectoDWES/indexProyectoDWES.php">VOLVER</a>
                 </div>
             </div>
         </main>
         
         <footer>
-            <p>2020-2021 - Nacho del Prado Losada - ignacio.pralos@educa.jcyl.es</p>
+            <div class="enlaces">
+                <a href="https://github.com/NachoPLSauces" target="_blank"><img src="doc/images/github-icon.png" alt="github"></a>
+                <a href="http://daw202.ieslossauces.es/" target="_blank"><img src="doc/images/1and1-icon.png" alt="github"></a>
+            </div>
+            <div class="nombre">
+                <h3>Nacho del Prado Losada</h3>
+                <h3>ignacio.pralos@educa.jcyl.es</h3>
+            </div>
         </footer>
     </body>
 </html>

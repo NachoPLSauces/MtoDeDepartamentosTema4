@@ -2,7 +2,7 @@
 /*
  * @author: Nacho del Prado Losada
  * @since: 10/01/2021
- * Description: fichero que pide al usuario rellenar campos. Si son correctos crea un nuevo Departamento 
+ * Description: fichero que permite al usuario editar los campos del departamento seleccionado
  */
 
 //Llamada a la librería de validación de formularios
@@ -16,9 +16,43 @@ if(isset($_REQUEST['volver'])){
     exit;
 }
 
+//Cargar los campos del departamento seleccionado
+try {
+    //Instanciar un objeto PDO y establecer la conexión con la base de datos
+    $miDB = new PDO(DSN, USER, PASSWORD);
+
+    //Establecer PDO::ERRMODE_EXCEPTION como valor del atributo PDO::ATTR_ERRMODE
+    $miDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    //Creo una variable que almacena una consulta sql para ver si el campo rellenado ya existía en la base de datos
+    $sql = "SELECT * from Departamento WHERE CodDepartamento=:CodDepartamento";
+
+    //Preparamos la consulta
+    $consulta = $miDB->prepare($sql);
+
+    //Llamada a bindParam
+    $consulta->bindParam(":CodDepartamento", $_GET['codDepartamento']);
+
+    //Se ejecuta la consulta
+    $consulta->execute();
+
+    $registro = $consulta->fetchObject();
+    
+    //Almaceno el contenido de los campos en variables
+    $descripcion = $registro->DescDepartamento;
+    $fechaBaja = $registro->FechaBaja;
+    $volumenNegocio = $registro->VolumenNegocio;
+
+} catch (PDOException $pdoe) {
+    //Mostrar mensaje de error
+    echo "<p style='color:red'>ERROR: " . $pdoe . "</p>";
+} finally {
+    //Cerrar la conexión
+    unset($miDB);
+}
+
 //Array de errores inicializado a null
-$aErrores = ["codDepartamento" => null,
-             "descripcion" => null,
+$aErrores = ["descripcion" => null,
              "volumenNegocio" => null];
 
 //Variable obligatorio inicializada a 1
@@ -29,49 +63,13 @@ define ('MAX_FLOAT', 3.402823466E+38);
 define ('MIN_FLOAT', -3.402823466E+38);
 
 //Varible de entrada correcta inicializada a true
-$entradaOK = true;           
+$entradaOK = true;   
 
-//Array de respuestas inicializado a null
-$aRespuestas = ["codDepartamento" => null,
-             "descripcion" => null,
-             "volumenNegocio" => null];
-
-if(isset($_REQUEST['crear'])){
-    //Comprobar que el campo codDepartamento se ha rellenado con un código válido
-    $aErrores["codDepartamento"] = validacionFormularios::comprobarAlfaNumerico($_REQUEST['codDepartamento'], 3, 3, OBLIGATORIO);
+if(isset($_REQUEST['editar'])){
     //Comprobar que el campo descripción se ha rellenado con alfanuméricos
     $aErrores["descripcion"] = validacionFormularios::comprobarAlfaNumerico($_REQUEST['descripcion'], 200, 1, OBLIGATORIO);
     //Comprobar que el campo volumenNegocio se ha rellenado con float
     $aErrores["volumenNegocio"] = validacionFormularios::comprobarFloat($_REQUEST['volumenNegocio'], MAX_FLOAT, MIN_FLOAT, OBLIGATORIO);
-
-    try {
-        //Instanciar un objeto PDO y establecer la conexión con la base de datos
-        $miDB = new PDO(DSN, USER, PASSWORD);
-
-        //Establecer PDO::ERRMODE_EXCEPTION como valor del atributo PDO::ATTR_ERRMODE
-        $miDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        //Creo una variable que almacena una consulta sql para ver si el campo rellenado ya existía en la base de datos
-        $sql = "SELECT CodDepartamento from Departamento where CodDepartamento='{$_REQUEST['codDepartamento']}'";
-
-        //Preparamos la consulta
-        $consulta = $miDB->prepare($sql);
-
-        //Se ejecuta la consulta
-        $consulta->execute();
-
-        //Se comprueba el campo y en caso de existir, muestra un mensaje de error
-        if($consulta->rowCount()>0){
-            $aErrores['codDepartamento'] = "El código introducido ya existe";
-        }
-
-    } catch (PDOException $pdoe) {
-        //Mostrar mensaje de error
-        echo "<p style='color:red'>ERROR: " . $pdoe . "</p>";
-    } finally {
-        //Cerrar la conexión
-        unset($miDB);
-    }
 
     //Comprobar si algún campo del array de errores ha sido rellenado
     foreach ($aErrores as $clave => $valor) {
@@ -81,18 +79,12 @@ if(isset($_REQUEST['crear'])){
             $entradaOK = false;
         }
     }
-
 }
 else{
     $entradaOK = false;
 }
 
 if($entradaOK){
-    //Si los datos han sido introducidos correctamente
-    $aRespuestas = ["codDepartamento" => $_REQUEST['codDepartamento'],
-                    "descripcion" => $_REQUEST['descripcion'],
-                    "volumenNegocio" => $_REQUEST['volumenNegocio']];
-
     //Mostrar registros de la tabla Departamento
     try {
         //Instanciar un objeto PDO y establecer la conexión con la base de datos
@@ -102,18 +94,15 @@ if($entradaOK){
         $miDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         //Se crea una variable que almacena una consulta sql para insertar los valores en la tabla Departamento
-        $sql = <<<EOD
-                INSERT INTO Departamento (CodDepartamento, DescDepartamento, VolumenNegocio) 
-                VALUES (:CodDepartamento, :DescDepartamento, :VolumenNegocio)
-EOD;
+        $sql = "UPDATE Departamento SET DescDepartamento=:DescDepartamento, VolumenNegocio=:VolumenNegocio WHERE CodDepartamento=:CodDepartamento";
 
         //Preparación de la consulta
         $consulta = $miDB->prepare($sql);
 
         //Llamada a bindParam
-        $consulta->bindParam(":CodDepartamento", $aRespuestas['codDepartamento']);
-        $consulta->bindParam(":DescDepartamento", $aRespuestas['descripcion']);
-        $consulta->bindParam(":VolumenNegocio", $aRespuestas['volumenNegocio']);
+        $consulta->bindParam(":CodDepartamento", $_GET['codDepartamento']);
+        $consulta->bindParam(":DescDepartamento", $_REQUEST['descripcion']);
+        $consulta->bindParam(":VolumenNegocio", $_REQUEST['volumenNegocio']);
 
         //Ejecución de la consulta
         $consulta->execute();
@@ -152,26 +141,12 @@ EOD;
             <form class="formulario" name="input" action="<?php $_SERVER['PHP_SELF']?>" method="post">
                 <fieldset>
                     <div>
-                        <h2>Alta departamento</h2>
+                        <h2>Editar departamento</h2>
                     </div>
 
                     <div>
-                        <label for="codDepartamento">Código de departamento <span>*</span></label><br>
-                        <span style="color:red">
-                            <?php
-                            //Imprime el error en el caso de que se introduzca mal el código del Departamento
-                            if($aErrores["codDepartamento"] != null){
-                                echo $aErrores['codDepartamento'];
-                            }
-                            ?> 
-                        </span>
-
-                        <input type="text" id="codDepartamento" name="codDepartamento" placeholder="Formato: ABC" value="<?php 
-                            //Devuelve el campo codDepartamento si se había introducido correctamente
-                            if($aErrores["codDepartamento"] == null){
-                                echo $_REQUEST['codDepartamento'];
-                            }
-                        ?>"/>
+                        <label for="codDepartamento">Código de departamento </label><br>
+                        <input class="readonly" type="text" id="codDepartamento" name="codDepartamento" value="<?php echo $_GET['codDepartamento']; ?>" readonly/>
 
                         <label for="descripcion">Descripción <span>*</span></label><br>
                         <span style='color:red'>
@@ -183,31 +158,40 @@ EOD;
                             ?> 
                         </span>
 
-                        <input type="text" id="descripcion" name="descripcion" placeholder="descripción del departamento" value="<?php 
-                            //Devuelve el campo descripcion si se había introducido correctamente
-                            if($aErrores["descripcion"] == null){
+                        <input type="text" id="descripcion" name="descripcion" value="<?php 
+                            //Rellena el campo descripcion
+                            if(isset($_REQUEST['descripcion']) && $aErrores["descripcion"] == null){
                                 echo $_REQUEST['descripcion'];
                             }
+                            else{
+                                echo $descripcion;
+                            }
                         ?>"/>
-
+                        
+                        <label for="fechaBaja">Fecha Baja </label><br>
+                        <input class="readonly" type="text" id="fechaBaja" name="fechaBaja" value="<?php echo ($fechaBaja ? $fechaBaja : "null"); ?>" readonly/>
+                        
                         <label for="volumen">Volumen <span>*</span></label><br>
                         <span style='color:red'>
                             <?php
-                            //Imprime el error en el caso de que se introduzca mal el apellido2
+                            //Imprime el error en el caso de que se introduzca mal el volumen de negocio
                             if($aErrores["volumenNegocio"] != null){
                                 echo $aErrores['volumenNegocio'];
                             }
                             ?> 
                         </span>
 
-                        <input type="text" id="volumen" name="volumenNegocio" placeholder="Volumen negocio" value="<?php 
-                            //Devuelve el campo volumenNegocio si se había introducido correctamente
-                            if($aErrores["volumenNegocio"] == null){
+                        <input type="text" id="volumen" name="volumenNegocio" value="<?php 
+                            //Rellena el campo volumenNegocio
+                            if(isset($_REQUEST['volumenNegocio']) && $aErrores["volumenNegocio"] == null){
                                 echo $_REQUEST['volumenNegocio'];
+                            }
+                            else{
+                                echo $volumenNegocio;
                             }
                         ?>"/>
 
-                        <input class="enviar" type="submit" value="Crear departamento" name="crear"/>
+                        <input class="enviar" type="submit" value="Confirmar cambios" name="editar"/>
                         <input class="enviar" type="reset" value="Borrar"/>
                     </div>
                 </fieldset>
