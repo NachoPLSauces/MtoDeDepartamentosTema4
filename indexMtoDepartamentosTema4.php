@@ -42,7 +42,9 @@
                         <label>Descripción </label>
                         <input name="DescDepartamento" type="text" placeholder="Descripción del departamento" value="<?php 
                             //Devuelve el campo campoDescDepartamento
-                            echo $_REQUEST['DescDepartamento'];
+                            if(isset($_REQUEST['DescDepartamento'])){
+                                echo $_REQUEST['DescDepartamento'];
+                            }
                         ?>"/>
                         <input class="botonBuscar" type="submit" value="BUSCAR" name="buscar"/>
                     </div>
@@ -86,8 +88,10 @@
                     }
                     
                     //Si los datos han sido introducidos correctamente
-                    $aRespuestas = ["DescDepartamento" => $_REQUEST['DescDepartamento']];
-
+                    if(isset($_REQUEST['DescDepartamento'])){
+                        $aRespuestas = ["DescDepartamento" => $_REQUEST['DescDepartamento']];
+                    }
+                    
                     //Mostrar registros de la tabla Departamento
                     try {
                         //Instanciar un objeto PDO y establecer la conexión con la base de datos

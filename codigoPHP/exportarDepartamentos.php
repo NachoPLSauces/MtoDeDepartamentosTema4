@@ -46,15 +46,16 @@ try {
         $registro = $consulta->fetchObject();
     }
 
+    $fechaActual = date("Ymd");
     //Guardar el archivo xml
-    $dom->save("../tmp/departamento.xml");                
+    $dom->save("../tmp/".$fechaActual."departamento.xml");                
 
     header('Content-Type: text/xml');
-    header('Content-Disposition: attachment;filename="departamento.xml"');
-    readfile("../tmp/departamento.xml");
+    header('Content-Disposition: attachment; filename='.$fechaActual.'departamento.xml');
+    readfile("../tmp/".$fechaActual."departamento.xml");
 } catch (PDOException $pdoe) {
     echo "<p style='color: red'>ERROR: " . $pdoe->getMessage() . "</p>";
-
+    die();
 } finally {
     //Cerrar la conexión
     unset($miDB);

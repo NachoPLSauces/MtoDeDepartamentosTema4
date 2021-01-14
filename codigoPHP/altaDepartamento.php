@@ -168,7 +168,7 @@ EOD;
 
                         <input type="text" id="codDepartamento" name="codDepartamento" placeholder="Formato: ABC" value="<?php 
                             //Devuelve el campo codDepartamento si se había introducido correctamente
-                            if($aErrores["codDepartamento"] == null){
+                            if(isset($_REQUEST['codDepartamento']) && $aErrores["codDepartamento"] == null){
                                 echo $_REQUEST['codDepartamento'];
                             }
                         ?>"/>
@@ -185,7 +185,7 @@ EOD;
 
                         <input type="text" id="descripcion" name="descripcion" placeholder="descripción del departamento" value="<?php 
                             //Devuelve el campo descripcion si se había introducido correctamente
-                            if($aErrores["descripcion"] == null){
+                            if(isset($_REQUEST['descripcion']) && $aErrores["descripcion"] == null){
                                 echo $_REQUEST['descripcion'];
                             }
                         ?>"/>
@@ -202,7 +202,7 @@ EOD;
 
                         <input type="text" id="volumen" name="volumenNegocio" placeholder="Volumen negocio" value="<?php 
                             //Devuelve el campo volumenNegocio si se había introducido correctamente
-                            if($aErrores["volumenNegocio"] == null){
+                            if(isset($_REQUEST['volumenNegocio']) && $aErrores["volumenNegocio"] == null){
                                 echo $_REQUEST['volumenNegocio'];
                             }
                         ?>"/>

@@ -31,7 +31,7 @@
                 $miDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 //Creo una variable que almacena una consulta sql
-                $sql = "INSERT INTO Departamento (CodDepartamento, DescDepartamento, VolumenNegocio) VALUES (:CodDepartamento, :DescDepartamento, :VolumenNegocio)";
+                $sql = "INSERT INTO Departamento (CodDepartamento, DescDepartamento, FechaBaja, VolumenNegocio) VALUES (:CodDepartamento, :DescDepartamento, :FechaBaja, :VolumenNegocio)";
 
                 //Obtener el número de departamentos
                 $numDepartamentos = $dom->getElementsByTagName("Departamento")->count();
@@ -44,11 +44,13 @@
                     //Creo variables y las inicializo para insertar los registros
                     $CodDepartamento = $dom->getElementsByTagName("CodDepartamento")->item($departamento)->nodeValue;
                     $DescDepartamento = $dom->getElementsByTagName("DescDepartamento")->item($departamento)->nodeValue;
+                    $FechaBaja = $dom->getElementsByTagName("FechaBaja")->item($departamento)->nodeValue;
                     $VolumenNegocio = $dom->getElementsByTagName("VolumenNegocio")->item($departamento)->nodeValue;
                     
                     //Llamada a bindParam
                     $consulta->bindParam(":CodDepartamento", $CodDepartamento);
                     $consulta->bindParam(":DescDepartamento", $DescDepartamento);
+                    $consulta->bindParam(":FechaBaja", $FechaBaja);
                     $consulta->bindParam(":VolumenNegocio", $VolumenNegocio);
                 
                     //Ejecución de la consulta
